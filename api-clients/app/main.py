@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app import routes
-from app.database import engine, Base
+from routes import router
+from database import engine, Base
 
 # Crée les tables en BDD
 Base.metadata.create_all(bind=engine)
@@ -8,4 +8,4 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="API Clients - Paye ton Kawa")
 
 # Inclure les routes clients
-app.include_router(routes.router, prefix="/clients", tags=["Clients"])
+app.include_router(router, prefix="/clients", tags=["Clients"])
