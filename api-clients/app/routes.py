@@ -6,7 +6,9 @@ from database import SessionLocal
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi import Request
-
+from app.event_bus import publish_event
+from fastapi.encoders import jsonable_encoder
+from crud import create_client as db_create_client, update_client as db_update_client, get_clients, delete_client as db_delete_client
 
 
 router = APIRouter()
@@ -21,7 +23,9 @@ def get_db():
 
 @router.post("/", response_model=ClientOut)
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
-    return create_client(db, client)
+    new_client = db_create_client(db, client)
+    publish_event("clients.created", jsonable_encoder(new_client))
+    return new_client
 
 @router.get("/", response_model=list[ClientOut])
 def read_clients(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -39,19 +43,20 @@ def read_clients(
 
 @router.put("/{client_id}", response_model=ClientOut)
 def update_client(client_id: int, client_data: ClientCreate, db: Session = Depends(get_db)):
-    client = update_client(db, client_id, client_data)
-    if not client:
+    updated_client = db_update_client(db, client_id, client_data)
+    if not updated_client:
         raise HTTPException(status_code=404, detail="Client non trouvé")
-    return client
+    publish_event("clients.updated", jsonable_encoder(updated_client))
+    return updated_client
+
 
 @router.delete("/{client_id}")
 def delete_client(client_id: int, db: Session = Depends(get_db)):
-    client = delete_client(db, client_id)
+    client = db_delete_client(db, client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client non trouvé")
+    publish_event("clients.deleted", {"id": client_id})
     return {"message": "Client supprimé avec succès"}
-
-
 
 
 templates = Jinja2Templates(directory="app/templates")
