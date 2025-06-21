@@ -7,7 +7,6 @@ RABBITMQ_HOST = 'localhost'
 EXCHANGE = 'events'
 
 #  Envoi d’un message vers RabbitMQ
-
 def publish_event(routing_key, data):
     connection = pika.BlockingConnection(pika.ConnectionParameters(RABBITMQ_HOST))
     channel = connection.channel()
@@ -39,4 +38,3 @@ def consume_event(routing_key, callback_function):
     channel.basic_consume(queue=queue_name, on_message_callback=on_message, auto_ack=True)
     print(f"En attente de messages : {routing_key}")
     channel.start_consuming()
-
