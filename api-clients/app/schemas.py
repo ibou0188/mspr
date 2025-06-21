@@ -20,3 +20,11 @@ class ClientOut(ClientBase):
     id: int
     class Config:
         from_attributes = True  # Pydantic v2
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
