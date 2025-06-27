@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models import Client
-from schemas import ClientCreate
+from app.models import Client
+from app.schemas import ClientCreate
 
 def create_client(db: Session, client: ClientCreate):
     db_client = Client(**client.dict())

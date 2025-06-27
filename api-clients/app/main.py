@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routes import router
-from database import engine, Base
+from app.routes import router
+from app.database import engine, Base
 
 # Crée les tables en BDD
 Base.metadata.create_all(bind=engine)

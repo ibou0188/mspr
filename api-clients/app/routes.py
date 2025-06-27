@@ -1,19 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas import ClientOut, ClientCreate
-from crud import create_client, get_clients
-from database import SessionLocal
+from app.schemas import ClientOut, ClientCreate, UserCreate, Token
+#rom app.crud import create_client, get_clients
+from app.database import SessionLocal
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi import Request
-from schemas import UserCreate, Token
-from models import User
+from app.models import User
 from fastapi.security import OAuth2PasswordRequestForm
-import auth  # fichier auth.py
+from app import auth  # fichier auth.py
 
 from app.event_bus import publish_event
 from fastapi.encoders import jsonable_encoder
-from crud import create_client as db_create_client, update_client as db_update_client, get_clients, delete_client as db_delete_client
+from app.crud import create_client as db_create_client, update_client as db_update_client, get_clients, delete_client as db_delete_client
 
 
 router = APIRouter()
