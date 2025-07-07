@@ -1,10 +1,12 @@
-name: Tests API Clients
+name: CI - Tests API Clients
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - "api-clients/**"
   pull_request:
-    branches: [ main ]
+    paths:
+      - "api-clients/**"
 
 jobs:
   test:
@@ -17,7 +19,6 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: rkb.0102
           POSTGRES_DB: paye_ton_kawa
-        
         options: >-
           --health-cmd pg_isready -U postgres
           --health-interval 10s
@@ -25,22 +26,23 @@ jobs:
           --health-retries 5
 
     steps:
-    - name: 🔄 Checkout code
-      uses: actions/checkout@v3
+      - name:  Checkout du code
+        uses: actions/checkout@v3
 
-    - name: 🐍 Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name:  Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
-    - name: 📦 Install dependencies
-      working-directory: ./api-clients
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name:  Installer les dépendances
+        run: |
+          cd api-clients
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: ⚙️ Run pytest
-      working-directory: ./api-clients
-      env:
-        DATABASE_URL: postgresql://postgres:rkb.0102@localhost:5432/paye_ton_kawa
-      run: pytest tests -v
+      - name:  Lancer les tests unitaires
+        env:
+          DATABASE_URL: postgresql://postgres:rkb.0102@localhost:5432/paye_ton_kawa
+        run: |
+          cd api-clients
+          pytest tests -v
