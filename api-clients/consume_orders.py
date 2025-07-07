@@ -13,7 +13,7 @@ def main():
 
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
     channel = connection.channel()
-
+    
     channel.exchange_declare(exchange='events', exchange_type='topic')
     queue_name = 'clients_listen_orders'
     channel.queue_declare(queue=queue_name, durable=True)
