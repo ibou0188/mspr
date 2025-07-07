@@ -17,8 +17,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: rkb.0102
           POSTGRES_DB: paye_ton_kawa
-        ports:
-          - 5432:5432
+        
         options: >-
           --health-cmd pg_isready -U postgres
           --health-interval 10s
