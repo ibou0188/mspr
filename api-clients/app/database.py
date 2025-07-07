@@ -2,8 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
-from dotenv import load_dotenv
-load_dotenv()
+#from dotenv import load_dotenv
+#load_dotenv()
 # Modifier  PostgreSQL
 #SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:rkb.0102@localhost:5432/paye_ton_kawa")
 DATABASE_URL = os.getenv("DATABASE_URL")
