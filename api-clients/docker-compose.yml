@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  db:
+  postgres:  
     image: postgres:15
     restart: always
     environment:
@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: rkb.0102
       POSTGRES_DB: paye_ton_kawa
     ports:
-      - "55433:5432"
+      - "55433:5432"  # Tu peux garder 55433 pour éviter conflit local
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -21,10 +21,10 @@ services:
   api:
     build: .
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://postgres:rkb.0102@db:5432/paye_ton_kawa
+      DATABASE_URL: postgresql://postgres:rkb.0102@postgres:5432/paye_ton_kawa
     ports:
       - "8000:8000"
 

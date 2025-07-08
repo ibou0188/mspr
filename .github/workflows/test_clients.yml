@@ -26,29 +26,29 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout du code
+      - name: 📥 Checkout du code
         uses: actions/checkout@v3
 
-      - name: Installer Python
+      - name: 🐍 Installer Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Installer les dépendances
+      - name: 📦 Installer les dépendances
         run: |
           cd api-clients
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Wait for Postgres to be ready
+      - name: ⏳ Attendre que Postgres soit prêt
         run: |
           for i in {1..30}; do
             pg_isready -h postgres -U postgres && break
-            echo "Waiting for Postgres to be ready ($i/30)..."
+            echo "⏳ En attente de Postgres ($i/30)..."
             sleep 2
           done
 
-      - name: Lancer les tests unitaires
+      - name:  Lancer les tests
         env:
           DATABASE_URL: postgresql://postgres:rkb.0102@postgres:5432/paye_ton_kawa
         run: |
