@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   db:  
@@ -21,7 +20,7 @@ services:
   api:
     build: .
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://postgres:rkb.0102@db:5432/paye_ton_kawa
