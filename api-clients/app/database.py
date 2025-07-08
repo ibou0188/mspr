@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:rkb.0102@postgres:5432/paye_ton_kawa")
+
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
