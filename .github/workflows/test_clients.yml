@@ -12,45 +12,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: rkb.0102
-          POSTGRES_DB: paye_ton_kawa
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-      - name: 📥 Checkout du code
+      - name: Checkout du code
         uses: actions/checkout@v3
 
-      - name: 🐍 Installer Python
+      - name: Installer Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: 📦 Installer les dépendances
+      - name: Installer les dépendances
         run: |
           cd api-clients
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: ⏳ Attendre que Postgres soit prêt
-        run: |
-          for i in {1..30}; do
-            pg_isready -h postgres -U postgres && break
-            echo "⏳ En attente de Postgres ($i/30)..."
-            sleep 2
-          done
-
-      - name:  Lancer les tests
+      - name: Lancer les tests unitaires
         env:
-          DATABASE_URL: postgresql://postgres:rkb.0102@postgres:5432/paye_ton_kawa
+          DATABASE_URL: postgresql://postgres:rkb.0102@127.0.0.1:55433/paye_ton_kawa
         run: |
           cd api-clients
           pytest tests -v
